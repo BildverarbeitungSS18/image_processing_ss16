@@ -1,0 +1,36 @@
+FROM ubuntu:16.04
+
+RUN  apt-get update && apt-get install -y zsh \
+                     vim \
+                     tmux \
+                     python3-numpy \
+                     python3-scipy \
+                     python3-matplotlib \
+                     ipython3 \
+                     python3-pillow \
+                     python3-pip
+
+RUN pip3 install jupyter scikit-image ipykernel
+
+# Use the same gid and uid as your user on the host system. You can find them
+# out with the id  programm. This way the file ownership in mapped directories is
+# consistent with the host system.
+RUN echo "%sudo ALL=(ALL) ALL" >> /etc/sudoers
+RUN groupadd --gid 1000 user
+RUN useradd --uid 1000  --gid user \
+    --home-dir /home/user --shell /usr/bin/bash  \
+    --groups sudo,user \
+    --password password \
+    user
+
+
+# set default passwords
+RUN echo user:password | chpasswd && \
+    echo root:password | chpasswd
+
+RUN mkdir -p /home/user && chown -R user:user /home/user
+
+USER user
+WORKDIR /home/user'
+
+CMD ["sh", "-c", "jupyter notebook --ip 0.0.0.0"]
