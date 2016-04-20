@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
  strip output of IPython Notebooks
  add this as `.git/hooks/pre-commit`
