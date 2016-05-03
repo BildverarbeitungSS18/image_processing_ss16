@@ -26,14 +26,30 @@ FROM ubuntu:16.04
 RUN  apt-get update && apt-get install -y zsh \\
                      vim \\
                      tmux \\
+                     git \\
                      python3-numpy \\
                      python3-scipy \\
                      python3-matplotlib \\
                      ipython3 \\
-                     python3-pillow \\
-                     python3-pip
+                     python3-pip \\
+                     python-pillow \\
+                     python-pip \\
+                     python-numpy \\
+                     python-scipy \\
+                     python-matplotlib \\
+                     ipython \\
+                     python-pillow \\
+                     python-pip
+
+
+ENV LC_ALL en_US.UTF-8
+RUN locale-gen en_US.UTF-8
 
 RUN pip3 install jupyter scikit-image ipykernel
+RUN pip install jupyter scikit-image ipykernel
+
+RUN ipython3 kernel install
+RUN ipython kernel install
 
 # Use the same gid and uid as your user on the host system. You can find them
 # out with the id  programm. This way the file ownership in mapped directories is
@@ -55,6 +71,8 @@ RUN mkdir -p /home/$username && chown -R $username:$username /home/$username
 
 USER $username
 WORKDIR /home/$username'
+
+RUN echo "PATH=$PATH:/usr/local/bin:~/.local/bin/" > /home/$username/.bashrc
 
 CMD ["sh", "-c", "jupyter notebook --ip 0.0.0.0"]
 EOF
