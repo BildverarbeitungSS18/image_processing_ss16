@@ -38,6 +38,7 @@ RUN  apt-get update && apt-get install -y zsh \\
                      python-scipy \\
                      python-matplotlib \\
                      ipython \\
+                     python-pil \\
                      python-pillow \\
                      python-pip
 
